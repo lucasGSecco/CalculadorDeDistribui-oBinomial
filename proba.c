@@ -36,32 +36,43 @@ double distribuicaoBinomial(int n, int x, double por1, double por2){
     return resultado;
 }
 
-double distribuicaoBinomialAcumulada(int n, int p, int tipo, double por1, double por2){
+double distribuicaoBinomialAcumulada(int n, int p, int tipo, double por1, double por2, int aux) {
     double resultado = 0;
 
-    if (tipo == 1)
-    {
-        for (int i = p; i <= n; i++)
-    {
-        double valor = distribuicaoBinomial(n,i,por1,por2);
-        resultado += valor;
-        printf("%.4lf\n",valor);
+    if (tipo == 1) {
+        for (int i = p; i <= n; i++) {
+            double valor = distribuicaoBinomial(n, i, por1, por2);
+            resultado += valor;
+            printf("%.4lf\n", valor);
+        }
+    } else if (tipo == 2) {
+        for (int i = p; i >= 0; i--) {
+            double valor = distribuicaoBinomial(n, i, por1, por2);
+            resultado += valor;
+            printf("%.4lf\n", valor);
+        }
+    } else {
+        if (p > aux) {
+            int auxiliar = p;
+            p = aux;
+            aux = auxiliar;
+        }
+
+        for (int i = p; i <= aux; i++) {
+            double valor = distribuicaoBinomial(n, i, por1, por2);
+            resultado += valor;
+            printf("%.4lf\n", valor);
+        }
     }
-    }else{
-        for (int i = p; i >= 0; i--)
-    {
-        double valor = distribuicaoBinomial(n,i,por1,por2);
-        resultado += valor;
-        printf("%.4lf\n",valor);
-    }
-    }
+
     return resultado;
 }
 
 
+
 int main(){
     
-    int x,n,escolha1 = 0, tipo, escolha = 1;
+    int x,n,escolha1 = 0, tipo, escolha = 1, aux = 0;
     double por1, por2;
 
     while (1)
@@ -100,26 +111,26 @@ int main(){
             escolha = 1;
             while (escolha)
             {
-                printf("Digite o valo de n: \n");
-                scanf("%d",&n);
-
-                printf("Digite o valor de P(x)\n");
-                scanf("%d", &x);
-            
-                printf("Digite a porcentagem de sucesso: \n");
-                scanf("%lf",&por1);
-
-                printf("Digite 1 para crescente(igual e maior que P(x)) ou 2 para descrecente(igual e menor que P(x))\n");
+                printf("Digite:\n 1 para crescente(igual e maior que P(x))\n2 para descrecente(igual e menor que P(x))\n3 para entre valores(ex: p(3) a p(7) ou ao contrario p(7) a p(3))\n");
                 scanf("%d", &tipo);
 
                 while (escolha)
                 {
                     if (tipo == 1 || tipo == 2)
                     {
+                        printf("Digite o valor de n: \n");
+                        scanf("%d",&n);
+
+                        printf("Digite o valor de P(x)\n");
+                        scanf("%d", &x);
+            
+                        printf("Digite a porcentagem de sucesso: \n");
+                        scanf("%lf",&por1);
+
                         por1 = por1 / 100;
                         por2 = 1 - por1;
 
-                        printf("%.4lf\n",distribuicaoBinomialAcumulada(n,x,tipo,por1,por2));
+                        printf("%.4lf\n",distribuicaoBinomialAcumulada(n,x,tipo,por1,por2,aux));
 
                         printf("Se deseja encerrar o calculo de distribuição binomial acumulada digite 0\nCaso queria realizar outra conta digite 1.\n");
                         scanf("%d", &escolha);
@@ -130,6 +141,34 @@ int main(){
                         }
                         
                         
+                    }else if(tipo == 3){
+
+                        
+                        printf("Digite o valor n: \n");
+                        scanf("%d",&n);
+
+                        printf("Digite o primeiro valor: \n");
+                        scanf("%d",&aux);
+
+                        printf("Digite o segundo valor: \n");
+                        scanf("%d", &x);
+            
+                        printf("Digite a porcentagem de sucesso: \n");
+                        scanf("%lf",&por1);
+                        
+                        por1 = por1 / 100;
+                        por2 = 1 - por1;
+
+                        printf("%.4lf\n",distribuicaoBinomialAcumulada(n,x,tipo,por1,por2,aux));
+
+                        printf("Se deseja encerrar o calculo de distribuição binomial acumulada digite 0\nCaso queria realizar outra conta digite 1.\n");
+                        scanf("%d", &escolha);
+
+                        if (escolha == 1)
+                        {
+                            break;
+                        }
+                    
                     }else if (escolha == 1)
                     {
                         printf("\nDigite um valor válido no tipo de distribuição!!\n");
